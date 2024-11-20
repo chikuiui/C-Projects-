@@ -1,0 +1,117 @@
+Premptive -> A process run until it completes its execution.
+Non-Premptive -> A process will stop running due to  {Higher Priority Process OR Time Quantum}
+
+* Time Quantum -> A time limit which is set to all process if process doesn't complete within the time limit it goes back
+                    to the ready state and upcoming process arrive in memory.(this keeps going on until process executes.)
+
+
+*                                           Scheduling Algorithms
+*                                          /                     \
+*                              (Premptive)                      (Non -Premptive)
+*
+*         1.  SRTF(Shortest Remaining Time First)             1. FCFS (First Come First Serve)
+*         2.  LRTF(Longest Remaining Time First)              2. Shotest Job First(SJF)
+*         3.  Round Robin                                     3. Longest Job First(LJF)
+*         4.  Priority Based                                  4. High-Response Ratio Next(HRRN)
+*                                                             5. Multi-Level Queue
+
+
+
+
+
+*  CPU SCHEDULING :-
+
+1. Arrival Time       ->   A time at which a process enters a ready queue.
+2. Burst Time         ->   A time required by a process to get execute on CPU.
+3. Completion Time    ->   A point at which process completes its execution.
+4. Turn Around Time   ->   {  Completion Time - Arrival Time  }
+5. Waiting Time       ->   {  Turn Around Time - Burst Time   }
+6. Response Time      ->   {  The time at which a process get in CPU  - Arrival Time}
+
+
+
+************************************************** NON - PREMPTIVE *********************************************************
+
+1. First Come First Serve :- Criteria -> (Arrival Time)
+____________________________________________________________________________________________________________________________
+P.No   |   Arrival Time   |    Burst Time   |   Completion Time   |   Turn-Around-Time   |  Waiting Time  |  Response Time |
+ p1    |        0         |        2        |          2          |         2            |      0         |      0         |
+ p2    |        1         |        2        |          4          |         3            |      1         |      1         |
+ p3    |        5         |        3        |          8          |         3            |      0         |      0         |
+ p4    |        6         |        4        |          12         |         6            |      2         |      2         |
+
+
+       
+*                       |__p1__|__p2__|__|__p3__|__p4__|
+Execution Complete ->   0      2      4  5      8      12
+
+4-5 == Idle state (CPU Doing nothing / free state)
+
+
+
+2.  Shortest Job First(SJF) :- Criteria -> Burst Time(Low)       NOTE -> Longest Job First(LJF) Criteria -> Burst Time(High)
+____________________________________________________________________________________________________________________________
+P.No   |   Arrival Time   |    Burst Time   |   Completion Time   |   Turn-Around-Time   |  Waiting Time  |  Response Time |
+ p1    |        1         |        3        |          6          |         5            |      2         |      2         |
+ p2    |        2         |        4        |          10         |         8            |      4         |      4         |
+ p3    |        1         |        2        |          3          |         2            |      0         |      0         |
+ p4    |        4         |        4        |          14         |         10           |      6         |      6         |
+
+
+*                       |__|__p3__|__p1__|__p2__|__p4__|
+Execution Complete ->   0  1      3      6     10     14     
+*                          p1     p1     p2    p4
+*                          p3     p2     p4
+
+
+****************************************************** PREMPTIVE ************************************************************
+
+1.  Shortest Remaining Time First (SRTF) :- [SJF with Premptive]  Criteria -> Burst TIme (Low) 
+____________________________________________________________________________________________________________________________
+P.No   |   Arrival Time   |    Burst Time   |   Completion Time   |   Turn-Around-Time   |  Waiting Time  |  Response Time |
+ p1    |        0         |        5        |          9          |         9            |      4         |      0         |
+ p2    |        1         |        3        |          4          |         3            |      0         |      0         |
+ p3    |        2         |        4        |         13          |         11           |      7         |      7         |
+ p4    |        4         |        1        |          5          |         1            |      0         |      0         |
+
+
+*                       |__p1__|__p2__|__p2__|__p2__|__p4__|__p1__|__p1__|__p1__|__p1__|__p3__|
+Execution Complete ->   0      1      2      3      4      5      6      7      8      9      13
+*                       p1     p1     p1     p1     p1     p1     p3     p3     p3     p3
+*                              p2     p3     p3     p3     p3
+*                                                   p4
+
+
+
+2.  Round Robin :-   Criteria -> Time Quantum(TQ = 2) 
+____________________________________________________________________________________________________________________________
+P.No   |   Arrival Time   |    Burst Time   |   Completion Time   |   Turn-Around-Time   |  Waiting Time  |  Response Time |
+ p1    |        0         |        5        |         12          |         12           |      7         |      0         |
+ p2    |        1         |        4        |         11          |         10           |      6         |      1         |
+ p3    |        2         |        2        |          6          |         4            |      2         |      2         |
+ p4    |        4         |        1        |          9          |         5            |      4         |      4         |
+
+
+*                       |__p1__|__p2__|__p3__|__p1__|__p4__|__p2__|__p1__|
+Execution Complete ->   0      2      4      6      8      9     11     12
+*           |-          p1     p2     p3     p1     p4     p2    p1
+*  QUEUE -> |-                 p3     p1     p4     p2     p1
+*           |-                 p1     p4     p2     p1
+            |-                        p2
+
+
+3.  Priority Scheduling :-    Criteria -> "Priority" [ Higher the No. higher the priority]
+___________________________________________________________________________________________________________________________________________
+P.No   |   Priority  |   Arrival Time   |    Burst Time   |   Completion Time   |   Turn-Around-Time   |  Waiting Time   |  Response Time |
+ p1    |      10     |        0         |       5         |         12          |          12          |       7         |       0        | 
+ p2    |      20     |        1         |       4         |         8           |          7           |       3         |       0        |
+ p3    |      30     |        2         |       2         |         4           |          2           |       0         |       0        |  
+ p4    |      40     |        4         |       1         |         5           |          1           |       0         |       0        |
+
+
+*                       |__p1__|__p2__|__p3__|__p3__|__p4__|__p2__|__p1__|
+Execution Complete ->   0      1      2      3      4      5      8      12
+*                       p1     p2     p3     p3     p4     p2     p1
+*                              p1     p2     p2     p2     p1
+*                                     p1     p1     p1
+*                                            
